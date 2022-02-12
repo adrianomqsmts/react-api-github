@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Container, Badge } from 'react-bootstrap';
+import { Card, Container, Badge, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -22,6 +22,7 @@ const App = () => {
 
   return (
     <Container>
+     
       {repositories
         .sort(({ pushed_at: pre }, { pushed_at: cur }) => updatedAt(pre) - updatedAt(cur))
         .map((repository) => (
@@ -31,18 +32,29 @@ const App = () => {
                 {repository.name}
               </Card.Title>
               <Card.Text>
+                Topics: <span> </span>
                 {repository.language &&
-                  <Badge bg="primary" className='h6'>{repository.language}</Badge>
-                }{repository.topics &&
+                  <>
+                    <Badge bg="primary" className='h6'>{repository.language}</Badge> <span> </span>
+                  </>
+                }
+
+                {repository.topics &&
                   repository.topics.map((topic) => (
-                    <Badge bg="success" className='h6'> {topic} </Badge>
+                    <>
+                      <Badge bg="success" className='h6'> {topic} </Badge> <span> </span>
+                    </>
                   ))
                 }
               </Card.Text>
               <hr />
-              <Card.Text>
-                Descrição do projeto: {repository.description} |  |  | {repository.html_url}
+              <Card.Text className='lead'>
+                <strong>Descrição do projeto</strong>: {repository.description}
               </Card.Text>
+              <div class="d-flex flex-row-reverse">
+                <Button variant="warning" className='text-right' href={repository.html_url}>Ver Repositório</Button>
+              </div>
+
             </Card.Body>
             <Card.Footer className="text-muted text-center">Updated {updatedAt(repository.pushed_at)} days ago</Card.Footer>
           </Card>
